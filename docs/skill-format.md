@@ -1,6 +1,6 @@
 # Skill format
 
-Skills in this repo follow the [Agent Skills specification](https://agentskills.io/specification). One folder per skill under `skills/<name>/` at the repo root. That catalog layout is what the [skills CLI](https://github.com/vercel-labs/skills) discovers (`npx skills add mike-gvs/gvs-skills --skill <name>`). Required file: `SKILL.md`. Optional conventional directories: `scripts/`, `references/`, `assets/`. Extra files (for example a human `README.md`) are allowed.
+Skills in this repo follow the [Agent Skills specification](https://agentskills.io/specification). One folder per skill under `skills/<name>/` at the repo root. That catalog layout is what the [skills CLI](https://github.com/vercel-labs/skills) discovers (`npx skills add mike-gvs/gvs-skills --skill <name>`). The spec does not define a repo-level registry file; this catalog still lists every skill in the root `README.md` table and in Claude Code's `.claude-plugin/marketplace.json`. Required file: `SKILL.md`. Optional conventional directories: `scripts/`, `references/`, `assets/`. Extra files (for example a human `README.md`) are allowed.
 
 ## Layout
 

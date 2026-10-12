@@ -6,9 +6,9 @@ Maintained by Gold Valley Solutions. License: [MIT](LICENSE). This repo is publi
 
 ## Skills
 
-| Name | What it does | Tools | Safety |
+| Name | Description | Install | Safety |
 |---|---|---|---|
-| [content-drafting-agent](skills/content-drafting-agent/) | Turns a filled voice guide plus rough notes into 1 blog post, 2 LinkedIn posts, and 1 newsletter blurb | none (chat-only; no `allowed-tools`) | draft-only |
+| [content-drafting-agent](skills/content-drafting-agent/) | Turns a filled voice guide plus rough notes into 1 blog post, 2 LinkedIn posts, and 1 newsletter blurb | `npx skills add mike-gvs/gvs-skills --skill content-drafting-agent` | draft-only |
 
 ## Install
 

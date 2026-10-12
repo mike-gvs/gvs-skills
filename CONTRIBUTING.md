@@ -19,7 +19,7 @@ A skill may be listed only when every item is true:
 
 1. Create `skills/<kebab-name>/` with `SKILL.md`, plus `references/` and `assets/` as needed. See [docs/skill-format.md](docs/skill-format.md). If it is listed for Claude Code, add it to `.claude-plugin/marketplace.json`.
 2. Put usage steps in the skill `README.md` for Claude, ChatGPT, Cursor, and paste.
-3. Add a row to the index table in the root `README.md` (name, what it does, tools, safety level **draft-only**).
+3. Add a row to the registry table in the root `README.md` (name linked to the folder, one-line description, `npx skills add mike-gvs/gvs-skills --skill <name>`, safety level **draft-only**). Add the same skill to `.claude-plugin/marketplace.json`. `pytest` fails if those lists drift from `skills/`.
 4. Run the validation commands in [AGENTS.md](AGENTS.md).
 5. Open a **draft** pull request using `.github/pull_request_template.md`.
 
