@@ -43,7 +43,7 @@ The body after the front matter is the step-by-step instructions.
 - Draft-only by default (nothing sends or publishes).
 - No secrets or keys.
 - No client or personal data.
-- A secret scan before every push.
+- A secret scan and the spec's scrub before every push.
 - PM review against the checklist in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 `scripts/validate_skills.py` checks front matter and required files. CI runs that script, `pytest -q`, and gitleaks.

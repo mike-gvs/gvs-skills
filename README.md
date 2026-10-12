@@ -2,7 +2,7 @@
 
 A catalog of **draft-only** AI skills: packaged instructions an assistant can follow in Claude, ChatGPT, Cursor, or any chat. Each skill drafts work for a human to review. Nothing here sends, posts, or calls a paid API.
 
-Maintained by Gold Valley Solutions. License: [MIT](LICENSE). This repo stays private until the owner publishes it.
+Maintained by Gold Valley Solutions. License: [MIT](LICENSE). This repo is public. Every push must pass the secret scan and the spec's scrub.
 
 ## Skills
 

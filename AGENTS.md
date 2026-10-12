@@ -6,7 +6,7 @@ Instructions for coding agents and humans working in this repo. Read this file f
 
 A catalog of draft-only AI skills: packaged instructions, templates, invented examples, and checks. Gold Valley Solutions publishes the catalog. Skills are plain Markdown. They do not send, post, or call paid APIs. The first skill is `content-drafting-agent`.
 
-This repo stays private until Mike changes that himself. Do not make it public. Do not enable GitHub Pages.
+This repo is public. Do not change visibility. Do not enable GitHub Pages. Every push must pass the secret scan and the spec's scrub (no private client or machine text).
 
 ## Setup (fresh checkout)
 
@@ -25,6 +25,8 @@ python scripts/validate_skills.py
 pytest -q
 gitleaks detect --source . --no-banner
 ```
+
+Then run the spec's scrub grep (AC-20). It must print no matches (`rc=1`). Remove local `__pycache__` first so bytecode paths are not false hits.
 
 - Tests must not call the network or any paid service.
 - `scripts/validate_skills.py` must exit 0. On failure it prints a clear message and exits non-zero.
@@ -50,7 +52,7 @@ gitleaks detect --source . --no-banner
 Any change that touches one of these must be listed under "Always-to-human flags" with the file and the reason. Some need Mike's OK **before** you do them (marked ⛔); don't do those without it in the spec.
 
 - License text or a license change
-- ⛔ Public exposure: making the repo public, enabling GitHub Pages, tunnels, binding to `0.0.0.0`
+- ⛔ Public exposure: changing visibility, enabling GitHub Pages, tunnels, binding to `0.0.0.0`
 - `.github/workflows/` or other CI/runtime config
 - New dependency: Python package, Action, or external tool
 - Public copy: README index, skill descriptions, anything a stranger would read as Gold Valley
@@ -63,6 +65,6 @@ Any change that touches one of these must be listed under "Always-to-human flags
 - Commit secrets, keys, tokens, `.env`, or real personal data.
 - Copy private Gold Valley content (voice guides, client files, internal notes) into this repo.
 - Use paid APIs or add packages beyond pytest and PyYAML.
-- Make this repo public, enable Pages, or change visibility.
+- Change this repo's visibility or enable GitHub Pages.
 - Enable auto-merge, merge a PR, or push extra commits to `main`.
 - Invent clients, quotes, or numbers in examples. Mark every example as fictional.

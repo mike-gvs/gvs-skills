@@ -29,7 +29,7 @@ You need no extra tools or API keys. Use it in Claude, ChatGPT, Cursor, or any c
 1. Copy `SKILL.md` into a project rule (for example `.cursor/rules/content-drafting-agent.mdc`) or point the agent at this folder.
 2. Put your filled voice guide and notes in the repo or attach them in the chat.
 3. Ask the agent to follow the skill, run `checks.md`, and stop after the drafts.
-4. Do not ask it to commit secrets, open the repo to the public, or publish the posts.
+4. Do not ask it to commit secrets, change repo visibility, enable Pages, or publish the posts.
 
 ## Any chat (paste)
 

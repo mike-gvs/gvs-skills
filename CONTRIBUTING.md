@@ -1,6 +1,6 @@
 # Contributing
 
-This catalog lists draft-only skills. Mike reviews every listing. Open a draft PR; do not merge and do not make the repo public.
+This catalog lists draft-only skills. The repo is public. Mike reviews every listing. Open a draft PR; do not merge, do not change visibility, and do not enable Pages. Every push must pass the secret scan and the spec's scrub.
 
 ## Listing checklist
 
@@ -11,6 +11,7 @@ A skill may be listed only when every item is true:
 - **No client or personal data.** No real customers, inboxes, phone numbers, or private notes.
 - **Invented examples only.** Input and output samples are clearly fictional. Do not copy a real voice guide.
 - **Secret scan passes.** `gitleaks detect --source . --no-banner` exits 0 on the full history.
+- **Scrub passes.** The spec's scrub grep finds no private client or machine text.
 - **Front matter valid.** `python scripts/validate_skills.py` exits 0. `SKILL.md` has parseable YAML with `name`, `description`, `version`, `license: MIT`, and `tools`. `name` matches the folder and is kebab-case. `version` is semver.
 - **PM review.** A human checks this list, the AI-tells check, and the "ask the owner" list before merge.
 
@@ -24,4 +25,4 @@ A skill may be listed only when every item is true:
 
 ## Out of scope here
 
-GitHub Pages, making the repo public, paid listings, third-party submissions, and extra Python packages. Those need a new spec and Mike's OK.
+GitHub Pages (stay off), changing visibility, paid listings, third-party submissions, and extra Python packages. Those need a new spec and Mike's OK.
