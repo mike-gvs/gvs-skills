@@ -12,6 +12,35 @@ Maintained by Gold Valley Solutions. License: [MIT](LICENSE). This repo is publi
 
 ## Install
 
+### CLI (`npx skills`)
+
+The [skills CLI](https://github.com/vercel-labs/skills) (`npx skills`, [skills.sh](https://skills.sh)) discovers `skills/<name>/SKILL.md` in this catalog and copies the skill into `.agents/skills/`, which Cursor and other surfaces the CLI supports then load:
+
+```bash
+npx skills add mike-gvs/gvs-skills --skill content-drafting-agent
+```
+
+List skills in the catalog without installing:
+
+```bash
+npx skills add mike-gvs/gvs-skills --list
+```
+
+List skills already installed in the current project:
+
+```bash
+npx skills list
+```
+
+From a non-default git ref or a local clone:
+
+```bash
+npx skills add mike-gvs/gvs-skills#<branch> --skill content-drafting-agent
+npx skills add ./ --skill content-drafting-agent
+```
+
+Until this catalog is on the repo default branch, use the `#<branch>` or local-path form. `npx skills add mike-gvs/gvs-skills` clones the default branch.
+
 ### Claude Code marketplace (confirmed)
 
 This repo includes `.claude-plugin/marketplace.json` so Claude Code can add it as a marketplace, list the plugin, and install the skill ([anthropics/skills](https://github.com/anthropics/skills), [Claude Code plugins](https://code.claude.com/docs/en/plugins/marketplace-reference)):
@@ -23,7 +52,7 @@ This repo includes `.claude-plugin/marketplace.json` so Claude Code can add it a
 
 ### ChatGPT
 
-No marketplace in this repo for ChatGPT. ChatGPT/Codex do not read `.claude-plugin/marketplace.json`. Copy the skill folder to `.agents/skills/` for Codex, use `$skill-installer` for local Codex installs from GitHub, or paste `SKILL.md` into a custom GPT. This catalog is not listed in the ChatGPT Plugins Directory. See the skill README.
+No marketplace in this repo for ChatGPT. ChatGPT/Codex do not read `.claude-plugin/marketplace.json`. `npx skills add` (above) copies the skill into `.agents/skills/`, which Codex scans. Or copy the folder there yourself, use `$skill-installer` for local Codex installs from GitHub, or paste `SKILL.md` into a custom GPT. This catalog is not listed in the ChatGPT Plugins Directory. See the skill README.
 
 ### GitHub Copilot
 
