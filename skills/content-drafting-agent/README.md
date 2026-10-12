@@ -12,6 +12,12 @@ The [skills CLI](https://github.com/vercel-labs/skills) (`npx skills`, [skills.s
 npx skills add mike-gvs/gvs-skills --skill content-drafting-agent
 ```
 
+The `skills` CLI needs Node.js 22.20 or newer. Older Node, for example 20.x, crashes with `fs/promises does not provide an export named 'glob'`. Workaround:
+
+```bash
+npx -y -p node@22 -p skills -- skills add mike-gvs/gvs-skills --skill content-drafting-agent
+```
+
 List skills in the catalog without installing:
 
 ```bash
