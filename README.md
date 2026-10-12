@@ -54,6 +54,10 @@ This repo includes `.claude-plugin/marketplace.json` so Claude Code can add it a
 
 No marketplace in this repo for ChatGPT. ChatGPT/Codex do not read `.claude-plugin/marketplace.json`. `npx skills add` (above) copies the skill into `.agents/skills/`, which Codex scans. Or copy the folder there yourself, use `$skill-installer` for local Codex installs from GitHub, or paste `SKILL.md` into a custom GPT. This catalog is not listed in the ChatGPT Plugins Directory. See the skill README.
 
+### Cursor
+
+Cursor has no marketplace listing for this catalog. `npx skills add` (above) copies the skill into `.agents/skills/`, which Cursor loads. Or paste `SKILL.md`, the filled voice guide, notes, and `references/checks.md` into the chat. See the skill README.
+
 ### GitHub Copilot
 
 No Copilot marketplace manifest in this repo. Copy the skill into `.github/skills/`, `.claude/skills/`, or `.agents/skills/`, or (`gh` 2.90+):
