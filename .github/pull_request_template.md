@@ -27,6 +27,7 @@ Files changed:
 | Command | Result |
 |---|---|
 | `python scripts/validate_skills.py` | |
+| `agentskills validate skills/content-drafting-agent` | |
 | `pytest -q` | |
 | `gitleaks detect --source . --no-banner` | |
 

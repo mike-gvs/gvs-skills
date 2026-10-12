@@ -2,7 +2,7 @@
 
 Fictional business: Example Bakery Co. Drafts only. Nothing was sent or published.
 
-These four pieces follow the sample notes in `input-notes.md` and pass `checks.md`.
+These four pieces follow the sample notes in `assets/input-notes.md` and pass `references/checks.md`.
 
 ## Blog post
 

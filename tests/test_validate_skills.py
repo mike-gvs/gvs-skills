@@ -1,7 +1,8 @@
-"""Tests for scripts/validate_skills.py.
+"""Tests for scripts/validate_skills.py against the Agent Skills spec.
 
-Covers missing front matter, missing required keys, name/folder mismatch,
-and a non-semver version, plus a valid skill that should pass.
+Required front-matter: name, description.
+Allowed optional: license, compatibility, metadata, allowed-tools.
+Unexpected keys (version, tools, …) fail. See agentskills.io/specification.
 """
 
 from __future__ import annotations
@@ -19,10 +20,10 @@ VALID_SKILL = dedent(
     """\
     ---
     name: demo-skill
-    description: A demo skill used only in tests.
-    version: 1.0.0
+    description: A demo skill used only in tests. Use when validating front matter.
     license: MIT
-    tools: [none]
+    metadata:
+      version: "1.0.0"
     ---
 
     # Demo skill
@@ -37,8 +38,6 @@ def _write_skill(
     skill_dir = tmp_path / "skills" / folder
     skill_dir.mkdir(parents=True)
     (skill_dir / "SKILL.md").write_text(skill_md, encoding="utf-8")
-    (skill_dir / "README.md").write_text("how to use\n", encoding="utf-8")
-    (skill_dir / "checks.md").write_text("checks\n", encoding="utf-8")
     return skill_dir
 
 
@@ -47,42 +46,103 @@ def test_valid_skill_has_no_errors(tmp_path: Path) -> None:
     assert validate_skills.validate_skill(skill_dir) == []
 
 
-def test_no_front_matter(tmp_path: Path) -> None:
-    skill_dir = _write_skill(tmp_path, skill_md="# No yaml here\n")
-    errors = validate_skills.validate_skill(skill_dir)
-    assert errors
-    assert any("front matter" in e.lower() for e in errors)
-
-
-def test_missing_required_key(tmp_path: Path) -> None:
+def test_minimal_name_and_description_pass(tmp_path: Path) -> None:
     md = dedent(
         """\
         ---
         name: demo-skill
-        description: Missing version on purpose.
-        license: MIT
-        tools: [none]
+        description: Minimal valid skill.
         ---
         Body
         """
     )
-    skill_dir = _write_skill(tmp_path, skill_md=md)
+    assert validate_skills.validate_skill(_write_skill(tmp_path, skill_md=md)) == []
+
+
+def test_no_front_matter(tmp_path: Path) -> None:
+    skill_dir = _write_skill(tmp_path, skill_md="# No yaml here\n")
     errors = validate_skills.validate_skill(skill_dir)
-    assert any("version" in e.lower() for e in errors)
+    assert errors
+    assert any("front matter" in e.lower() or "frontmatter" in e.lower() for e in errors)
+
+
+def test_missing_description(tmp_path: Path) -> None:
+    md = dedent(
+        """\
+        ---
+        name: demo-skill
+        license: MIT
+        ---
+        Body
+        """
+    )
+    errors = validate_skills.validate_skill(_write_skill(tmp_path, skill_md=md))
+    assert any("description" in e.lower() for e in errors)
 
 
 def test_name_mismatch(tmp_path: Path) -> None:
     md = VALID_SKILL.replace("name: demo-skill", "name: other-name")
-    skill_dir = _write_skill(tmp_path, skill_md=md)
-    errors = validate_skills.validate_skill(skill_dir)
-    assert any("name" in e.lower() and "folder" in e.lower() for e in errors)
+    errors = validate_skills.validate_skill(_write_skill(tmp_path, skill_md=md))
+    assert any("name" in e.lower() and "director" in e.lower() for e in errors)
 
 
-def test_bad_version(tmp_path: Path) -> None:
-    md = VALID_SKILL.replace("version: 1.0.0", "version: uno")
-    skill_dir = _write_skill(tmp_path, skill_md=md)
+def test_unexpected_version_field(tmp_path: Path) -> None:
+    md = dedent(
+        """\
+        ---
+        name: demo-skill
+        description: Top-level version is not an allowed field.
+        version: 1.0.0
+        ---
+        Body
+        """
+    )
+    errors = validate_skills.validate_skill(_write_skill(tmp_path, skill_md=md))
+    assert any("version" in e.lower() and "unexpected" in e.lower() for e in errors)
+
+
+def test_unexpected_tools_field(tmp_path: Path) -> None:
+    md = dedent(
+        """\
+        ---
+        name: demo-skill
+        description: Top-level tools is not an allowed field.
+        tools: ["none"]
+        ---
+        Body
+        """
+    )
+    errors = validate_skills.validate_skill(_write_skill(tmp_path, skill_md=md))
+    assert any("tools" in e.lower() and "unexpected" in e.lower() for e in errors)
+
+
+def test_consecutive_hyphens_in_name(tmp_path: Path) -> None:
+    md = dedent(
+        """\
+        ---
+        name: demo--skill
+        description: Consecutive hyphens are invalid.
+        ---
+        Body
+        """
+    )
+    skill_dir = _write_skill(tmp_path, folder="demo--skill", skill_md=md)
     errors = validate_skills.validate_skill(skill_dir)
-    assert any("version" in e.lower() or "semver" in e.lower() for e in errors)
+    assert any("consecutive" in e.lower() for e in errors)
+
+
+def test_description_over_1024_chars(tmp_path: Path) -> None:
+    md = dedent(
+        f"""\
+        ---
+        name: demo-skill
+        description: {"x" * 1025}
+        ---
+        Body
+        """
+    )
+    errors = validate_skills.validate_skill(_write_skill(tmp_path, skill_md=md))
+    assert any("1024" in e for e in errors)
 
 
 def test_cli_exits_nonzero_when_a_skill_is_invalid(

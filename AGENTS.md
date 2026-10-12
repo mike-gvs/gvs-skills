@@ -16,12 +16,13 @@ python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
 ```
 
-Python 3.11, pytest, and PyYAML only. Do not add other packages.
+Python 3.11, pytest, PyYAML, and the official `skills-ref` validator. Do not add other packages without a spec.
 
 ## Validation commands (these match `.github/workflows/ci.yml`; run them before every commit you hand over)
 
 ```bash
 python scripts/validate_skills.py
+agentskills validate skills/content-drafting-agent   # PyPI CLI for skills-ref; some docs say `skills-ref validate`
 pytest -q
 gitleaks detect --source . --no-banner
 ```
@@ -34,8 +35,8 @@ Then run the spec's scrub grep (AC-20). It must print no matches (`rc=1`). Remov
 
 ## Conventions
 
-- One folder per skill under `skills/<name>/`. The folder name is the kebab-case `name` in `SKILL.md` front matter.
-- Required files: `SKILL.md`, `README.md`, `checks.md`. See `docs/skill-format.md`.
+- One folder per skill under `skills/<name>/`. The folder name matches the `name` in `SKILL.md` front matter (Agent Skills spec).
+- Required file: `SKILL.md`. Conventional optional dirs: `scripts/`, `references/`, `assets/`. See `docs/skill-format.md` and https://agentskills.io/specification.
 - Examples are invented and clearly fake. No client data, no private Gold Valley content, no real people, companies, or numbers.
 - Safety level for every listing is draft-only until a later spec says otherwise.
 
@@ -64,7 +65,7 @@ Any change that touches one of these must be listed under "Always-to-human flags
 
 - Commit secrets, keys, tokens, `.env`, or real personal data.
 - Copy private Gold Valley content (voice guides, client files, internal notes) into this repo.
-- Use paid APIs or add packages beyond pytest and PyYAML.
+- Use paid APIs or add packages beyond pytest, PyYAML, and skills-ref.
 - Change this repo's visibility or enable GitHub Pages.
 - Enable auto-merge, merge a PR, or push extra commits to `main`.
 - Invent clients, quotes, or numbers in examples. Mark every example as fictional.

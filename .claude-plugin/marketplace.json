@@ -1,0 +1,20 @@
+{
+  "name": "gvs-skills",
+  "owner": {
+    "name": "Gold Valley Solutions"
+  },
+  "metadata": {
+    "description": "Draft-only Agent Skills from Gold Valley Solutions.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "content-drafting-agent",
+      "description": "Draft a blog post, two LinkedIn posts, and a newsletter blurb from a filled voice guide and notes. Never send or publish.",
+      "version": "1.0.0",
+      "source": "./skills",
+      "strict": false,
+      "skills": ["./content-drafting-agent"]
+    }
+  ]
+}

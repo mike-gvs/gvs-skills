@@ -12,10 +12,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install PyYAML
-        run: pip install PyYAML
-      - name: Validate skills
+      - name: Install validators
+        run: pip install PyYAML skills-ref
+      - name: Validate skills (repo script)
         run: python scripts/validate_skills.py
+      - name: Validate skills (skills-ref)
+        run: |
+          # Spec/docs say `skills-ref validate`; PyPI 0.1.1 installs the CLI as `agentskills`.
+          VALIDATE_CMD="$(command -v skills-ref || command -v agentskills)"
+          test -n "$VALIDATE_CMD"
+          for d in skills/*/ ; do
+            "$VALIDATE_CMD" validate "$d"
+          done
 
   test:
     runs-on: ubuntu-latest

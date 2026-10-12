@@ -1,42 +1,59 @@
 # Skill format
 
-One folder per skill, plain files, no code required. Folders already work as-is in tools that support Agent Skills (for example Claude). For other tools the skill `README.md` gives a copy-paste path, so a skill is not tied to one vendor.
+Skills in this repo follow the [Agent Skills specification](https://agentskills.io/specification). One folder per skill. Required file: `SKILL.md`. Optional conventional directories: `scripts/`, `references/`, `assets/`. Extra files (for example a human `README.md`) are allowed.
 
 ## Layout
 
-| File | Purpose |
+```
+skill-name/
+├── SKILL.md          # Required: metadata + instructions
+├── scripts/          # Optional: executable code
+├── references/       # Optional: documentation (this catalog: checks.md)
+├── assets/           # Optional: templates and example resources
+└── README.md         # Optional: how a human installs and uses the skill
+```
+
+| Path | Purpose |
 |---|---|
-| `SKILL.md` | Front matter (name, one-line description, version, license, tools needed) plus step-by-step instructions the assistant follows |
-| `templates/` | Fill-in-the-blank files the user completes (for example a generic `voice-guide-template.md`). Never a private voice guide. |
-| `examples/` | One input and output pair with invented, clearly fake content |
-| `checks.md` | The "AI tells" check (no em dashes, no stock phrases, no invented clients or numbers) and the "ask the owner" list |
-| `README.md` | How to use it in Claude (skills/projects), ChatGPT (custom GPT or project instructions), Cursor (rules), or any chat by pasting it |
+| `SKILL.md` | YAML front matter plus step-by-step instructions |
+| `assets/` | Templates and static examples (voice guide, invented input/output) |
+| `references/` | On-demand docs (AI-tells check, ask-the-owner list) |
+| `scripts/` | Executable code (none in skill #1) |
+
+File references from `SKILL.md` are one level deep (`assets/…`, `references/…`).
 
 ## `SKILL.md` front matter
 
-YAML between `---` lines at the top of the file. Required keys:
+Required by the spec:
 
 | Key | Rule |
 |---|---|
-| `name` | kebab-case; must match the folder name |
-| `description` | one line, at most 200 characters |
-| `version` | semver `MAJOR.MINOR.PATCH` (for example `1.0.0`) |
-| `license` | `MIT` |
-| `tools` | YAML list. Use `[none]` when the skill is chat-only. |
+| `name` | 1–64 characters; lowercase `a-z`, `0-9`, hyphens; no leading/trailing hyphen; no `--`; must match the folder name |
+| `description` | 1–1024 characters; what the skill does and when to use it |
+
+Allowed optional fields:
+
+| Key | Rule |
+|---|---|
+| `license` | License name or bundled license file. This catalog uses `MIT`. |
+| `compatibility` | 1–500 characters; omit unless the skill has environment requirements |
+| `metadata` | Map of string keys to string values (this catalog puts `version` and `safety` here) |
+| `allowed-tools` | Space-separated string of pre-approved tools (experimental). Omit for chat-only draft skills. |
+
+Do not put `version` or `tools` at the top level. Those are not spec fields. Put extra keys under `metadata`.
 
 Example:
 
 ```yaml
 ---
 name: example-skill
-description: One line on what the skill drafts.
-version: 1.0.0
+description: What it drafts and when to use it.
 license: MIT
-tools: [none]
+metadata:
+  version: "1.0.0"
+  safety: draft-only
 ---
 ```
-
-The body after the front matter is the step-by-step instructions.
 
 ## Safety rules for every listing
 
@@ -44,6 +61,5 @@ The body after the front matter is the step-by-step instructions.
 - No secrets or keys.
 - No client or personal data.
 - A secret scan and the spec's scrub before every push.
+- `python scripts/validate_skills.py` and `agentskills validate <skill-dir>` (skills-ref) both exit 0.
 - PM review against the checklist in [CONTRIBUTING.md](../CONTRIBUTING.md).
-
-`scripts/validate_skills.py` checks front matter and required files. CI runs that script, `pytest -q`, and gitleaks.
